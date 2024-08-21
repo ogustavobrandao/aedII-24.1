@@ -19,7 +19,7 @@ arvore inserir(arvore raiz, int chave, int *cresceu){
         return novo;
     } else {
         if(chave > raiz->chave) {
-            raiz->dir = inserir(raiz->dir, chave);
+            raiz->dir = inserir(raiz->dir, chave, cresceu);
             //Atualizar fatores de balanço
             //1. Fator de balanço atual (raiz->fb)
             //2. Direita
@@ -42,9 +42,24 @@ arvore inserir(arvore raiz, int chave, int *cresceu){
             }
 
         } else {
-            raiz->esq = inserir(raiz->esq, chave);
+            raiz->esq = inserir(raiz->esq, chave, cresceu);
 
             //verificação se a sub-árvore cresceu, considerando inserir na esquerda
+            if(*cresceu){
+                 switch(raiz->fb) {
+                    case -1:
+                      //rotacionar
+                        return rotacionar(raiz);
+                    case 0:
+                        raiz->fb = -1;
+                        *cresceu = 1;
+                        break;
+                    case 1:
+                        raiz->fb = 0;
+                        *cresceu = 0;
+                        break;
+                }
+            }
         }
         return raiz;
     }
@@ -262,20 +277,39 @@ arvore remover (arvore raiz, int valor, int *diminuiu) {
         //Fator de balanço atual ? => raiz->fb
         //subárvore diminuiu ? => *diminuiu
         //Remoção esquerda ou direita => esquerda
-
-
-
-
+        if(*diminuiu) {
+            switch(raiz->fb) {
+                case -1:
+                    raiz->fb = 0;
+                    *diminuiu = 1; 
+                    break;
+                case 0:
+                    raiz->fb = 1;
+                    *diminuiu = 0;  
+                    break;
+                case +1:
+                    raiz->fb = 2; //=>rotação
+                    return rotacionar(raiz);
+            }
+        }
 
     }
     return raiz;
 
 }
 
+arvore procurar_maior(arvore raiz){
+    if(raiz->dir != NULL){
+        raiz = procurar_maior(raiz->dir);
+    }
+
+    return raiz;
+}
+
 void preorder(arvore raiz) {
     //Caso base implícito na negativa
     if(raiz != NULL) {
-        printf("[%d]", raiz->chave);
+        printf("[%d], fator de balanco [%d] \n", raiz->chave, raiz->fb);
         preorder(raiz->esq);
         preorder(raiz->dir);
     }

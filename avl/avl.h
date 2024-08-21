@@ -16,6 +16,7 @@ arvore rotacao_dupla_esquerda(arvore raiz);
 arvore rotacao_simples_direita(arvore raiz);
 arvore rotacao_dupla_direita(arvore raiz);
 arvore remover (arvore raiz, int valor, int *diminuiu);
+arvore procurar_maior(arvore raiz);
 void preorder(arvore raiz);
 
 
