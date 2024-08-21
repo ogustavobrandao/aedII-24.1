@@ -1,14 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "avl.h"
 
-//Representação da estrutura do nó
-typedef struct no {
-    int chave;
-    struct no *esq, *dir;
-    int fb;
-} no;
 
-typedef no* arvore;
 
 arvore inserir(arvore raiz, int chave, int *cresceu){
     //Caso Base
@@ -71,7 +65,7 @@ arvore rotacionar(arvore raiz) {
     //p - pivô
     if(p->fb > 0) {
         //rotação esquerda
-        u=raiz->dir;
+        u = raiz->dir;
         if(u->fb >= 0){
             //caso fb(p, u) = [(+2, +1), (+2, 0)]
             if(u->fb == 1) {
@@ -83,7 +77,7 @@ arvore rotacionar(arvore raiz) {
             }
             return rotacao_simples_esquerda(raiz);
         } else {
-            v=u->esq;
+            v = u->esq;
             //fb(p,u,v) = [(+2,-1,0),(+2,-1,-1),(+2,-1, 1)]
             switch(v->fb) {
                 case 0:
@@ -92,8 +86,14 @@ arvore rotacionar(arvore raiz) {
                     v->fb = 0;
                     break;
                 case 1:
+                    p->fb = -1;
+                    u->fb = 0;//corresponde ao v->pb do desenho
+                    v->fb = 0;//corresponde ao u->pb do desenho
                     break;
                 case -1:
+                    p->fb = 0;
+                    u->fb = 1;//corresponde ao v->pb do desenho
+                    v->fb = 0;//corresponde ao u->pb do desenho
                     break;
             }
 
@@ -101,9 +101,37 @@ arvore rotacionar(arvore raiz) {
         }
     } else {
         //rotação direita
-        if(raiz->esq->fb <= 0){
+        u = raiz->esq;
+        if(u->fb <= 0){
+            if(u->fb == -1) {
+                p->fb = 0;
+                u->fb = 0;
+            } else {
+                p->fb = -1;
+                u->fb = 1;
+            }
+
             return rotacao_simples_direita(raiz);
         } else {
+            v = u->dir;
+            switch(v->fb) {
+                case 0:
+                    p->fb = 0;
+                    u->fb = 0;//corresponde ao v->pb do desenho
+                    v->fb = 0;//corresponde ao u->pb do desenho
+                    break;
+                case 1:
+                    p->fb = 0;
+                    u->fb = -1;//corresponde ao v->pb do desenho
+                    v->fb = 0;//corresponde ao u->pb do desenho
+                    break;
+                case -1:
+                    p->fb = 1;
+                    u->fb = 0;//corresponde ao v->pb do desenho
+                    v->fb = 0;//corresponde ao u->pb do desenho
+                    break;
+            }
+            
            return rotacao_dupla_direita(raiz);
         }
     }
@@ -140,7 +168,32 @@ arvore rotacao_simples_esquerda(arvore raiz) {
     return u;
 }
 
+arvore rotacao_simples_direita(arvore raiz) {
+    //Declarar e inicializar os ponteiros p, u, t1, t2, t3
+    arvore p, u, t2;
+    p = raiz;
+    u = p->esq;
+    t2 = u->dir;
+
+    //Atualização de ponteiros
+    u->dir = p;
+    p->esq = t2;
+
+    //Atualização da raiz relativa
+    return u;
+}
+
 arvore rotacao_dupla_esquerda(arvore raiz) {
+    raiz->dir = rotacao_simples_direita(raiz->dir);
+    raiz = rotacao_simples_esquerda(raiz);
+
+    return raiz;
+}
+
+arvore rotacao_dupla_direita(arvore raiz) {
+    raiz->esq = rotacao_simples_esquerda(raiz->esq);
+    raiz = rotacao_simples_direita(raiz);
+
     return raiz;
 }
 
@@ -219,18 +272,19 @@ arvore remover (arvore raiz, int valor, int *diminuiu) {
 
 }
 
-
-
-
-
-
-int main(int argc, char* argv[]) {
-    //declaração de uma variável do tipo árvore
-    arvore arvore1;
-
-    //inicialização da variável do tipo árvore
-    arvore1 = NULL;
-
-    exit(0);
+void preorder(arvore raiz) {
+    //Caso base implícito na negativa
+    if(raiz != NULL) {
+        printf("[%d]", raiz->chave);
+        preorder(raiz->esq);
+        preorder(raiz->dir);
+    }
 }
+
+
+
+
+
+
+
 
