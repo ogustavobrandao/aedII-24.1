@@ -243,8 +243,11 @@ arvore remover (arvore raiz, int valor, int *diminuiu) {
         //2 filhos
         if(raiz->esq != NULL && raiz->dir != NULL) {
             arvore maior = procurar_maior(raiz->esq);
-            raiz->chave = maior->chave;
-            raiz->esq = remover(raiz->esq, maior->chave, diminuiu);
+            int chave = maior->chave;
+            arvore raizAnterior = raiz;
+            raiz = remover(raiz, chave, diminuiu);
+            raizAnterior->chave = chave;
+            
             return raiz;
         }
     }
