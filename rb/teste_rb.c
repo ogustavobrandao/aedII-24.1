@@ -7,6 +7,8 @@ int main(int argc, char * argv[]) {
 	int opcao;
 	inicializar(&a);
 
+    printf("----------Implementacao da arvore Rubro-Negra----------\n");
+
 	while(1) {
 		scanf("%d", &opcao);
 

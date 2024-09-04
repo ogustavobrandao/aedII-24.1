@@ -309,16 +309,68 @@ arvore procurar_maior(arvore raiz){
     return raiz;
 }
 
-void preorder(arvore raiz) {
+void pre_order(arvore raiz) {
     //Caso base implícito na negativa
     if(raiz != NULL) {
         printf("[%d], fator de balanco [%d] \n", raiz->chave, raiz->fb);
-        preorder(raiz->esq);
-        preorder(raiz->dir);
+        pre_order(raiz->esq);
+        pre_order(raiz->dir);
     }
 }
 
+void in_order(arvore raiz) {
+    //Caso base implícito na negativa
+    if(raiz != NULL) {
+        in_order(raiz->esq);
+        printf("[%d], fator de balanco [%d] \n", raiz->chave, raiz->fb);
+        in_order(raiz->dir);
+    }
+}
+void pos_order(arvore raiz) {
+    //Caso base implícito na negativa
+    if(raiz != NULL) {
+        pos_order(raiz->esq);
+        pos_order(raiz->dir);
+        printf("[%d], fator de balanco [%d] \n", raiz->chave, raiz->fb);
+    }
+}
 
+int maior_elemento(arvore raiz){
+    if(raiz == NULL){
+        return -1;
+    }
+    if(raiz->dir != NULL){
+        return maior_elemento(raiz->dir);
+    }
+
+    return raiz->chave;
+}
+
+int menor_elemento(arvore raiz){
+    if(raiz == NULL){
+        return -1;
+    }
+    if(raiz->esq != NULL){
+        return menor_elemento(raiz->esq);
+    }
+
+    return raiz->chave;
+}
+
+int altura(arvore raiz){
+    if (raiz == NULL) {
+        return 0;
+    }
+
+    int altura_esq = altura(raiz->esq);
+    int altura_dir = altura(raiz->dir);
+
+    if (altura_esq > altura_dir) {
+        return altura_esq + 1;
+    } else {
+        return altura_dir + 1;
+    }
+}
 
 
 

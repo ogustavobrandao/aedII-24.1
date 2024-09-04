@@ -3,38 +3,57 @@
 #include "avl.h"
 
 int main(int argc, char* argv[]) {
-    //declaração de uma variável do tipo árvore
-    arvore arvore1;
+        int opcao;
+        //declaração de uma variável do tipo árvore
+        arvore arvore;
 
-    //inicialização da variável do tipo árvore
-    arvore1 = NULL;
+        //inicialização da variável do tipo árvore
+        arvore = NULL;
+        int diminuiu;
+        int cresceu;
 
-    int cresceu = 0;
-    int diminuiu = 0;
-    arvore1 = inserir(arvore1, 10, &cresceu);
-    arvore1 = inserir(arvore1, 30, &cresceu);
-    arvore1 = inserir(arvore1, 20, &cresceu);
-    arvore1 = inserir(arvore1, 59, &cresceu);
-    arvore1 = inserir(arvore1, 44, &cresceu);
-    arvore1 = inserir(arvore1, 54, &cresceu);
-    arvore1 = inserir(arvore1, 55, &cresceu);
-    arvore1 = inserir(arvore1, 56, &cresceu);
-    arvore1 = inserir(arvore1, 67, &cresceu);
-    arvore1 = inserir(arvore1, 45, &cresceu);
-    arvore1 = inserir(arvore1, 2, &cresceu);
-    arvore1 = inserir(arvore1, 3, &cresceu);
-    arvore1 = inserir(arvore1, 6, &cresceu);
-    arvore1 = inserir(arvore1, 5, &cresceu);
-    arvore1 = inserir(arvore1, 66, &cresceu);
-    arvore1 = inserir(arvore1, 1, &cresceu);
-    arvore1 = inserir(arvore1, 7, &cresceu);
-    arvore1 = inserir(arvore1, 24, &cresceu);
-    arvore1 = remover(arvore1, 59, &diminuiu);
+        printf("----------Implementacao da arvore AVL----------\n");
+        while(1) {
 
+            scanf("%d", &opcao);
+
+            switch(opcao) {
+                int valor;
+                case 1:
+                        printf("%d\n", altura(arvore));
+                        break;
+                case 2:
+                        cresceu = 0;
+                        scanf("%d", &valor);
+                        arvore = inserir(arvore, valor, &cresceu);
+                        break;
+                case 3:
+                        printf("%d\n", maior_elemento(arvore));
+                        break;
+                case 4:
+                        printf("%d\n", menor_elemento(arvore));
+                        break;
+                case 5:
+                        pre_order(arvore);
+                        printf("\n");
+                        break;
+                case 6:
+                        in_order(arvore);
+                        printf("\n");
+                        break;
+                case 7:
+                        pos_order(arvore);
+                        printf("\n");
+                        break;
+                case 8:
+                        diminuiu = 0;
+                        scanf("%d", &valor);
+                        arvore = remover(arvore, valor, &diminuiu);
+                        break;
+
+                case 99:
+                        exit(0);
+                }
+        }
 // 10, 30, 20, 59,44, 54,55,56,67,45,2,3,6,5,66,1,7,24?
-
-
-    preorder(arvore1);
-
-    exit(0);
 }
