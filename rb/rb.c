@@ -322,7 +322,7 @@ void remover (int valor, arvore *raiz) {
 			//elemento possui dois filhos
             if(posicao->esq != NULL && posicao->dir != NULL) { 
     			int valor = maior_elemento(posicao->esq);   
-	    		remover(maior_elemento(posicao->esq), &(*raiz));
+	    		remover(valor, &(posicao->esq));
 				posicao->dado = valor;
                 break;
             }
@@ -383,15 +383,15 @@ void remover (int valor, arvore *raiz) {
 						posicao->pai->dir = NULL;
 					break;
 				} else {
-				//Se o elemento for preto, substitui pelo duplo preto e depois ajusta a árvore
-				no_null->pai = posicao->pai;
-				if(eh_filho_esquerdo(posicao))
-					posicao->pai->esq = no_null;
-				else
-					posicao->pai->dir = no_null;
-				
-                reajustar(raiz, no_null);
-				break;
+					//Se o elemento for preto, substitui pelo duplo preto e depois ajusta a árvore
+					no_null->pai = posicao->pai;
+					if(eh_filho_esquerdo(posicao))
+						posicao->pai->esq = no_null;
+					else
+						posicao->pai->dir = no_null;
+					
+					reajustar(raiz, no_null);
+					break;
 				}
 			}
 		}	
@@ -458,9 +458,9 @@ void reajustar(arvore *raiz, arvore elemento){
 		cor(irmao(elemento)->dir) == PRETO &&
 		cor(irmao(elemento)->esq) == PRETO) {	
 		//Verificar e remover o no_null
-			retira_duplo_preto(raiz, elemento);
 			elemento->pai->cor = PRETO;
 			irmao(elemento)->cor = VERMELHO;
+			retira_duplo_preto(raiz, elemento);
 
 			return;
 	}
